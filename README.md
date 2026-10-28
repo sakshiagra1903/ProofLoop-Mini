@@ -1,75 +1,139 @@
-# ProofLoop Mini — Verified Automation Workspace
+# ProofLoop Mini
 
-ProofLoop Mini is a local-first, full-stack starter for **self-verifying workflows**. The project now includes a responsive browser dashboard and a FastAPI + SQLite backend. It deliberately uses a deterministic, allowlisted workflow rather than claiming to use an LLM that is not configured.
+**A local-first workflow automation platform with CSV processing, independent output verification, execution history, and a FastAPI-powered dashboard.**
 
-## Features
+ProofLoop Mini helps users process CSV data, generate structured reports, and verify outputs through a simple web interface. It is built with Python and FastAPI, with a lightweight frontend and local data storage.
 
-- **Modern dashboard:** workspace pulse metrics, recent executions, task history, report ledger and responsive layout.
-- **End-to-end workflow UI:** launch a sales report, select a CSV from the workspace, name the JSON output, and set a bounded retry count.
-- **Local CSV upload:** upload UTF-8 CSVs (up to 5 MB) directly to the workspace.
-- **Safe processing:** filenames only (no arbitrary paths), allowlisted `sales_report` operation, numeric/finite amount validation, exact duplicate removal, atomic JSON output.
-- **Independent verification:** reopens the saved JSON and validates output existence, JSON format, category totals and row-count consistency.
-- **Execution trace:** SQLite task history and per-step evidence, inspectable in the UI and API.
-- **Evidence/report download:** download generated JSON and inspect verification checks.
-- **Real analytics:** counts and totals are derived from persisted task records; no seeded/mock dashboard numbers.
-- **API docs and tests:** OpenAPI at `/docs`; pytest tests cover validation and engine behavior.
+## ✨ Features
 
-## Run on Windows PowerShell
+- **CSV Processing** — Load and process structured CSV files.
+- **Data Cleaning** — Identify and remove duplicate records.
+- **Sales Aggregation** — Summarize sales by category.
+- **Report Generation** — Generate structured JSON reports.
+- **Independent Verification** — Check processed outputs against verification rules.
+- **Execution History** — Track workflow executions and their results.
+- **Web Dashboard** — Interact with the application through a browser-based interface.
+- **REST API** — Access supported functionality through FastAPI endpoints.
+- **Automated Tests** — Test core processing and API behavior using pytest.
 
-Python 3.12 is recommended (Python 3.11+ should also work with compatible dependencies).
+## 🛠️ Tech Stack
 
-```powershell
-cd ProofLoop-Mini
-py -3.12 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-python -m uvicorn app.main:app --reload --port 8000
-```
-
-If PowerShell blocks virtual-environment activation, run this in the same terminal and activate again:
-
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\.venv\Scripts\Activate.ps1
-```
-
-Open **http://127.0.0.1:8000** for the dashboard, or **http://127.0.0.1:8000/docs** for API docs. The backend serves the frontend itself, so no separate frontend server is required.
-
-## First workflow
-
-1. Open the dashboard and click **Run a workflow**.
-2. Choose `sales.csv`, which is included in `workspace/`, or upload another CSV.
-3. Keep the default output name `sales_report.json` or enter another `.json` filename.
-4. Click **Run & verify**.
-5. Inspect the execution timeline, row counts, category totals, evidence and verification checks. Use **Download JSON report** to retrieve the result.
-
-Input CSV must have `category` and `amount` columns. Output files are stored in `workspace/`. The SQLite database is stored at `app/proofloop.db` and is created automatically on first run.
-
-## Tests
-
-In a second terminal, activate the virtual environment and run:
-
-```powershell
-python -m pytest -q
-```
-
-## API endpoints
-
-| Endpoint | Purpose |
+| Technology | Purpose |
 |---|---|
-| `GET /` | Dashboard frontend |
-| `GET /api/health` | API/database/mode health |
-| `GET /api/files` | List workspace CSVs and JSON reports |
-| `POST /api/upload` | Upload a CSV into the workspace (max 5 MB) |
-| `GET /api/files/{filename}` | Download a workspace CSV/JSON file |
-| `POST /api/tasks` | Execute and verify an allowlisted task |
-| `GET /api/tasks` | List persisted task history |
-| `GET /api/tasks/{task_id}` | Task result and step evidence |
-| `GET /api/analytics` | Computed dashboard metrics |
+| Python | Backend logic |
+| FastAPI | REST API and application server |
+| SQLite | Local data storage |
+| HTML5 | Frontend structure |
+| CSS3 | Styling and layout |
+| JavaScript | Frontend interactions |
+| pytest | Automated testing |
 
-## Important scope and security notes
+## 📁 Project Structure
 
-- The current supported operation is **sales_report**. The app is not yet a general-purpose autonomous agent.
-- LLM planning (Groq/Ollama), authentication, multi-user deployment, background workers and additional workflow types are not implemented. The dashboard labels the current mode as deterministic/local rather than pretending these features exist.
-- This is designed for local development. Do not expose the development server to the public internet without authentication, rate limiting, stronger isolation and deployment hardening.
+```text
+ProofLoop-Mini/
+├── app/
+│   ├── main.py
+│   ├── database.py
+│   ├── engine.py
+│   ├── models.py
+│   └── static/
+│       ├── index.html
+│       ├── styles.css
+│       └── app.js
+├── docs/
+│   └── ARCHITECTURE.md
+├── tests/
+│   ├── test_api.py
+│   └── test_engine.py
+├── workspace/
+│   ├── ProofLoop-Sample-Sales.csv
+│   ├── sales.csv
+│   └── sales_report.json
+├── .env.example
+├── .gitignore
+├── requirements.txt
+└── README.md
+```
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Python 3.10 or newer
+- Git
+- A terminal such as PowerShell or Command Prompt
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/sakshiagra1903/ProofLoop-Mini.git
+cd ProofLoop-Mini
+```
+
+### 2. Create a virtual environment
+
+**Windows PowerShell:**
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+If PowerShell blocks activation, you can run the commands below instead:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+### 3. Install dependencies
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+### 4. Start the application
+
+```bash
+python -m uvicorn app.main:app --reload
+```
+
+Open the local address printed in the terminal. By default, Uvicorn uses:
+
+`http://127.0.0.1:8000`
+
+FastAPI's interactive API documentation is generally available at:
+
+`http://127.0.0.1:8000/docs`
+
+## 🧪 Run Tests
+
+From the project root, execute:
+
+```bash
+python -m pytest -v
+```
+
+The test suite includes API and core-engine tests.
+
+## 🔌 API Documentation
+
+Once the server is running, open `/docs` on your local application address to inspect the available API endpoints and try supported requests.
+
+
+
+## 🗺️ Future Improvements
+
+- More configurable verification rules
+- Improved workflow monitoring and error reporting
+- Additional CSV validation options
+- Exportable execution summaries
+- Enhanced dashboard visualizations
+
+## 👩‍💻 Author
+
+**Sakshi Agrawal**
+<img width="1920" height="1080" alt="Screenshot 2026-10-28 114346" src="https://github.com/user-attachments/assets/1e4c520a-4206-436d-b0fb-b8db56b59e97" />
+<img width="1920" height="1080" alt="Screenshot 2026-10-28 114346" src="https://github.com/user-attachments/assets/a87c3635-897c-40bf-addf-eddab83fe15d" />
+
+GitHub: [@sakshiagra1903](https://github.com/sakshiagra1903)
