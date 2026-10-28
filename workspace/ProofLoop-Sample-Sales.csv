@@ -1,0 +1,10 @@
+category,amount,transaction_id
+books,10.0,TX001
+books,10.0,TX001
+games,5.5,TX002
+home,25.0,TX003
+games,12.0,TX004
+electronics,199.99,TX005
+books,18.75,TX006
+home,42.0,TX007
+games,8.25,TX008

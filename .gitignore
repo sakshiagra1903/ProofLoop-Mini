@@ -1,0 +1,9 @@
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+.env
+*.py[cod]
+app/proofloop.db
+workspace/output/
+.DS_Store

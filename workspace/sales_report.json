@@ -1,0 +1,13 @@
+{
+  "source_file": "ProofLoop-Sample-Sales.csv",
+  "output_file": "sales_report.json",
+  "rows_read": 9,
+  "rows_after_deduplication": 8,
+  "duplicates_removed": 1,
+  "category_totals": {
+    "books": 28.75,
+    "electronics": 199.99,
+    "games": 25.75,
+    "home": 67.0
+  }
+}
